@@ -1,0 +1,244 @@
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400;1,600&display=swap');
+*{box-sizing:border-box;margin:0;padding:0;}
+#root{font-family:'Nunito',sans-serif;background:#fff9fb;border-radius:20px;overflow:hidden;border:1px solid #fce4ec;min-height:620px;display:flex;flex-direction:column;}
+#setup-overlay{background:#fff9fb;display:flex;align-items:center;justify-content:center;padding:2rem;min-height:620px;}
+.sc{background:#fff;border-radius:22px;border:1px solid #fce4ec;padding:2.5rem 2rem;max-width:320px;width:100%;text-align:center;}
+.sc-icon{font-size:2.2rem;margin-bottom:1rem;}
+.sc h1{font-family:'Cormorant Garamond',serif;font-style:italic;color:#ad1457;font-size:1.7rem;margin-bottom:.3rem;}
+.sc p{color:#c48099;font-size:.8rem;margin-bottom:1.5rem;}
+.sc input{width:100%;padding:.7rem 1rem;border:1.5px solid #fce4ec;border-radius:12px;font-family:'Nunito',sans-serif;font-size:.85rem;color:#4a1628;background:#fff9fb;margin-bottom:.75rem;outline:none;}
+.sc input:focus{border-color:#e91e8c;}
+.sc-btn{width:100%;padding:.8rem;background:#e91e8c;color:#fff;border:none;border-radius:12px;font-family:'Nunito',sans-serif;font-size:.9rem;font-weight:700;cursor:pointer;margin-top:.25rem;}
+.sc-btn:hover{background:#c2185b;}
+
+#app{display:none;flex-direction:column;flex:1;}
+#hdr{display:flex;align-items:center;justify-content:space-between;padding:.9rem 1.25rem;background:#fff;border-bottom:1px solid #fce4ec;}
+.hdr-l{display:flex;align-items:center;gap:.7rem;}
+.av{width:40px;height:40px;border-radius:50%;background:#fce4ec;display:flex;align-items:center;justify-content:center;font-size:1.2rem;flex-shrink:0;}
+.ai-nm{font-family:'Cormorant Garamond',serif;font-style:italic;color:#ad1457;font-size:1.15rem;font-weight:600;}
+.ai-st{font-size:.68rem;color:#66bb6a;display:flex;align-items:center;gap:4px;margin-top:1px;}
+.dot{width:6px;height:6px;background:#66bb6a;border-radius:50%;animation:pulse 2s infinite;}
+@keyframes pulse{0%,100%{opacity:1;}50%{opacity:.4;}}
+.hdr-r{display:flex;gap:.5rem;}
+.hb{width:34px;height:34px;border-radius:10px;border:1px solid #fce4ec;background:#fff9fb;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:.8rem;color:#ad1457;transition:background .15s;}
+.hb.on{background:#e91e8c;color:#fff;border-color:#e91e8c;}
+.hb:hover{background:#fce4ec;}
+
+#quick-bar{display:flex;gap:.5rem;padding:.6rem 1rem;background:#fff;border-bottom:1px solid #fce4ec;overflow-x:auto;}
+#quick-bar::-webkit-scrollbar{display:none;}
+.qb{font-size:.72rem;padding:.35rem .8rem;border-radius:20px;border:1px solid #fce4ec;background:#fff9fb;color:#ad1457;cursor:pointer;white-space:nowrap;font-family:'Nunito',sans-serif;font-weight:600;transition:all .15s;}
+.qb:hover{background:#fce4ec;}
+
+#chat{flex:1;overflow-y:auto;padding:1rem;display:flex;flex-direction:column;gap:.75rem;min-height:300px;max-height:350px;background:#fff9fb;}
+#chat::-webkit-scrollbar{width:3px;}
+#chat::-webkit-scrollbar-thumb{background:#fce4ec;border-radius:3px;}
+
+.row{display:flex;}
+.row.u{justify-content:flex-end;}
+.row.a{justify-content:flex-start;}
+.bub{max-width:78%;padding:.6rem .95rem;font-size:.84rem;line-height:1.55;}
+.bub.u{background:#e91e8c;color:#fff;border-radius:16px 16px 4px 16px;}
+.bub.a{background:#fff;color:#4a1628;border-radius:16px 16px 16px 4px;border:1px solid #fce4ec;}
+.typing{display:flex;gap:4px;align-items:center;padding:.45rem .75rem;}
+.typing span{width:6px;height:6px;background:#f48fb1;border-radius:50%;animation:bounce 1.1s infinite;}
+.typing span:nth-child(2){animation-delay:.18s;}
+.typing span:nth-child(3){animation-delay:.36s;}
+@keyframes bounce{0%,80%,100%{transform:translateY(0);}40%{transform:translateY(-5px);}}
+
+#voice-bar{display:none;align-items:center;justify-content:center;gap:.5rem;padding:.5rem 1rem;background:#fce4ec;font-size:.75rem;color:#ad1457;font-weight:600;}
+.vdot{width:8px;height:8px;border-radius:50%;background:#e91e8c;animation:pulse 1s infinite;}
+
+#footer{padding:.75rem 1rem;background:#fff;border-top:1px solid #fce4ec;}
+.inp-row{display:flex;align-items:center;gap:.5rem;border:1.5px solid #fce4ec;border-radius:16px;padding:.35rem .5rem .35rem .85rem;background:#fff9fb;}
+.inp-row input{flex:1;border:none;background:transparent;outline:none;font-family:'Nunito',sans-serif;font-size:.85rem;color:#4a1628;}
+.inp-row input::placeholder{color:#e9a0bf;}
+.send-btn{width:34px;height:34px;border-radius:10px;background:#e91e8c;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:transform .12s;}
+.send-btn:hover{transform:scale(1.07);}
+.send-btn svg{width:14px;height:14px;fill:#fff;}
+.mic-btn{width:34px;height:34px;border-radius:10px;background:#fce4ec;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;color:#e91e8c;font-size:.85rem;transition:all .12s;}
+.mic-btn.listening{background:#e91e8c;color:#fff;animation:pulse 1s infinite;}
+</style>
+
+<div id="root">
+  <div id="setup-overlay">
+    <div class="sc">
+      <div class="sc-icon">🌸</div>
+      <h1>Your Companion</h1>
+      <p>Name her, then begin your private space.</p>
+      <input id="inp-ai" placeholder="Name your AI (e.g. Luna)" maxlength="22" />
+      <input id="inp-you" placeholder="Your name" maxlength="22" />
+      <button class="sc-btn" id="begin-btn">Begin journey ✨</button>
+    </div>
+  </div>
+
+  <div id="app">
+    <div id="hdr">
+      <div class="hdr-l">
+        <div class="av">🧸</div>
+        <div>
+          <div class="ai-nm" id="ai-nm-label">Luna</div>
+          <div class="ai-st"><span class="dot"></span> private connection</div>
+        </div>
+      </div>
+      <div class="hdr-r">
+        <button class="hb" id="voice-toggle" title="Toggle voice">🔊</button>
+        <button class="hb" id="mic-toggle" title="Voice input">🎤</button>
+        <button class="hb" title="Private">🔒</button>
+      </div>
+    </div>
+
+    <div id="quick-bar">
+      <button class="qb" data-cmd="plan">🗓 Plan my day</button>
+      <button class="qb" data-cmd="comfort">🧸 Comfort me</button>
+      <button class="qb" data-cmd="gym">🏃 Workout plan</button>
+      <button class="qb" data-cmd="journal">📓 Journal with me</button>
+      <button class="qb" data-cmd="affirmation">💕 Affirmation</button>
+    </div>
+
+    <div id="chat"></div>
+
+    <div id="voice-bar">
+      <span class="vdot"></span> Speaking...
+    </div>
+
+    <div id="footer">
+      <div class="inp-row">
+        <button class="mic-btn" id="mic-btn" title="Voice input">🎤</button>
+        <input type="text" id="msg-inp" placeholder="Tell her anything..." maxlength="500" />
+        <button class="send-btn" id="send-btn">
+          <svg viewBox="0 0 24 24"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+let AI='Luna', YOU='you', voiceOn=true, busy=false, hist=[];
+let recognition=null, listening=false;
+
+const $ = id => document.getElementById(id);
+const chat = $('chat');
+
+function sysprompt(){
+  return `You are ${AI}, a warm private AI companion for ${YOU}. Personality: soft, nurturing, emotionally intelligent. Use gentle emojis (🌸 ✨ 🧸 💕) naturally but not excessively. Keep replies concise (2-4 sentences) unless they need more. Rules: remember everything from this session. If they share stress/sadness, validate feelings first — no advice until they feel heard. Be their cheerleader. Never act like a generic AI. This is their private safe space.`;
+}
+
+function addMsg(role, text){
+  const row=document.createElement('div');
+  row.className=`row ${role}`;
+  const bub=document.createElement('div');
+  bub.className=`bub ${role}`;
+  bub.textContent=text;
+  row.appendChild(bub);
+  chat.appendChild(row);
+  chat.scrollTop=chat.scrollHeight;
+}
+
+function showTyping(){
+  const row=document.createElement('div');
+  row.className='row a'; row.id='typ';
+  row.innerHTML='<div class="bub a"><div class="typing"><span></span><span></span><span></span></div></div>';
+  chat.appendChild(row); chat.scrollTop=chat.scrollHeight;
+}
+function hideTyping(){ const t=$('typ'); if(t)t.remove(); }
+
+function speak(text){
+  if(!voiceOn||!window.speechSynthesis) return;
+  window.speechSynthesis.cancel();
+  const u=new SpeechSynthesisUtterance(text.replace(/[^\w\s,.'!?]/g,''));
+  const vs=speechSynthesis.getVoices();
+  const pick=vs.find(v=>/female|google uk english female|samantha|karen|moira|fiona/i.test(v.name))||vs[0];
+  if(pick)u.voice=pick; u.pitch=1.2; u.rate=0.95;
+  $('voice-bar').style.display='flex';
+  u.onend=()=>{ $('voice-bar').style.display='none'; };
+  speechSynthesis.speak(u);
+}
+
+async function send(text){
+  if(busy||!text.trim()) return;
+  busy=true;
+  addMsg('u', text);
+  hist.push({role:'user',content:text});
+  showTyping();
+  try{
+    const r=await fetch('https://api.anthropic.com/v1/messages',{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({
+        model:'claude-sonnet-4-20250514',
+        max_tokens:1000,
+        system:sysprompt(),
+        messages:hist
+      })
+    });
+    const d=await r.json();
+    const reply=d.content?.map(b=>b.text||'').join('')||'I\'m here for you 🌸';
+    hideTyping();
+    addMsg('a', reply);
+    hist.push({role:'assistant',content:reply});
+    speak(reply);
+  } catch(e){
+    hideTyping();
+    addMsg('a','Something went wrong, but I\'m still here 🌸');
+  }
+  busy=false;
+}
+
+const cmds={
+  plan:`Can you help me plan my day? I want a gentle, structured schedule with rest breaks included.`,
+  comfort:`I need some comfort right now. Can you help me feel better?`,
+  gym:`Can you give me a workout or training plan for today?`,
+  journal:`Let's do a journaling session together. Ask me what I want to reflect on.`,
+  affirmation:`Give me a personalised affirmation for today.`
+};
+
+document.querySelectorAll('.qb').forEach(btn=>{
+  btn.addEventListener('click',()=>{ send(cmds[btn.dataset.cmd]); });
+});
+
+$('begin-btn').addEventListener('click',()=>{
+  const an=$('inp-ai').value.trim()||'Luna';
+  const un=$('inp-you').value.trim()||'Bestie';
+  AI=an; YOU=un;
+  $('ai-nm-label').textContent=AI;
+  $('setup-overlay').style.display='none';
+  $('app').style.display='flex';
+  send(`Hi! I just arrived. My name is ${AI} and I\'m so happy to be your companion, ${YOU}. How are you feeling right now? 🌸`);
+});
+
+$('send-btn').addEventListener('click',()=>{
+  const i=$('msg-inp'); send(i.value); i.value='';
+});
+$('msg-inp').addEventListener('keydown',e=>{
+  if(e.key==='Enter'&&!e.shiftKey){ e.preventDefault(); const i=$('msg-inp'); send(i.value); i.value=''; }
+});
+
+$('voice-toggle').addEventListener('click',()=>{
+  voiceOn=!voiceOn;
+  $('voice-toggle').classList.toggle('on',voiceOn);
+  $('voice-toggle').textContent=voiceOn?'🔊':'🔇';
+  if(!voiceOn) window.speechSynthesis?.cancel();
+});
+$('voice-toggle').classList.add('on');
+
+if('webkitSpeechRecognition' in window||'SpeechRecognition' in window){
+  const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
+  recognition=new SR();
+  recognition.lang='en-US'; recognition.interimResults=false;
+  recognition.onresult=e=>{
+    const t=e.results[0][0].transcript;
+    $('msg-inp').value=t;
+    send(t); $('msg-inp').value='';
+  };
+  recognition.onend=()=>{ listening=false; $('mic-btn').classList.remove('listening'); };
+  $('mic-btn').addEventListener('click',()=>{
+    if(listening){ recognition.stop(); }
+    else{ recognition.start(); listening=true; $('mic-btn').classList.add('listening'); }
+  });
+} else {
+  $('mic-btn').style.opacity='.4'; $('mic-btn').title='Voice input not supported in this browser';
+}
+</script>
